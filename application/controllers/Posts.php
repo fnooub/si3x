@@ -25,7 +25,7 @@ class Posts extends CI_Controller {
 		$this->paginator->initialize($config);
 
 		$start_row = $this->paginator->get_start_row();
-		$data['posts'] = $this->posts_model->get_posts(1, $start_row);
+		$data['posts'] = $this->posts_model->get_posts(12, $start_row);
 		$data['pagination'] = $this->paginator->create_links();
 
 		$this->load->view('templates/header', $data);
