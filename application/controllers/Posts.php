@@ -119,7 +119,7 @@ class Posts extends CI_Controller {
 
 		// Temp folder and epub file name (path)
 		$epub->temp_folder = 'temp_folder/';
-		$epub->epub_file = slug($post['tieude']) . '.epub';
+		$epub->epub_file = 'files/' . slug($post['tieude']) . '.epub';
 
 		// E-book configs
 		$epub->title = $post['tieude'];
