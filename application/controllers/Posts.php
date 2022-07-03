@@ -180,6 +180,7 @@ class Posts extends CI_Controller {
 	{
 		$files = glob('temp_folder/*'); // get all file names
 		foreach($files as $file){ // iterate files
+			echo $file;
 			if(is_file($file)) {
 				unlink($file); // delete file
 			}
