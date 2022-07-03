@@ -18,8 +18,8 @@ class Posts extends CI_Controller {
 		$config['current_page'] = isset($current_page) ? $current_page : 1;
 		$config['total_rows'] = $this->posts_model->get_total();
 		$config['base_url'] = base_url('posts?trang=(:num)');
-		$config['per_page'] = 1;
-		$config['num_links'] = 12;
+		$config['per_page'] = 12;
+		$config['num_links'] = 9;
 		$config['next_link'] = 'Sau';
 		$config['prev_link'] = 'Trước';
 		$this->paginator->initialize($config);
