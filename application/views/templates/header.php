@@ -21,7 +21,8 @@
 
 <?php if ($this->session->userdata('logged_in')): ?>
 	<a href="<?php echo base_url('users/logout') ?>">Dang xuat</a> | 
-	<a href="<?php echo base_url('posts/add') ?>">Them</a>
+	<a href="<?php echo base_url('posts/add') ?>">Them</a> | 
+	<a href="<?php echo base_url('posts/delete_file') ?>">Xoa epubs</a>
 	<hr>
 <?php endif ?>
 <?php if($this->session->flashdata('success')): ?>
