@@ -4,7 +4,7 @@
 	<hr>
 <?php endif ?>
 <h1><?php echo $title ?></h1>
-<p><a href="<?php echo base_url() . 'posts/epub/' . $id ?>">Tải về epub</a> <a href="<?php echo base_url() . 'posts/epub/' . $id ?>">Tải về txt</a></p>
+<p><a href="<?php echo base_url() . 'posts/epub/' . $id ?>">Tải về epub</a> <a href="<?php echo base_url() . 'posts/txt/' . $id ?>">Tải về txt</a></p>
 <?php if (!empty($posts)): ?>
 	<?php foreach ($posts as $key => $post): ?>
 		<div class="list-group mb-1">
