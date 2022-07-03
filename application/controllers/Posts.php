@@ -176,6 +176,16 @@ class Posts extends CI_Controller {
 		echo $nd;
 	}
 
+	public function delete_file()
+	{
+		$files = glob('temp_folder/*'); // get all file names
+		foreach($files as $file){ // iterate files
+			if(is_file($file)) {
+				unlink($file); // delete file
+			}
+		}
+	}
+
 	public function search()
 	{
 		if ($tukhoa = $this->input->get('tukhoa', TRUE)) {
