@@ -97,6 +97,85 @@ class Posts extends CI_Controller {
 
 	}
 
+	public function epub()
+	{
+		$this->load->library('TPEpubCreator');
+		$id = $this->uri->rsegment(3);
+		$post = $this->posts_model->get_post_by_id($id);
+		if (!$post) show_404();
+
+		// This is only to make sure the charset is UTF-8
+		// You may remove this line.
+		header('Content-Type: text/html; charset=utf-8');
+
+		// load du lieu
+		$nd = file_get_contents($post['noidung']);
+
+		$data = explode("[nextpage]", $nd);
+		array_shift($data);
+
+		// Here we go
+		$epub = new TPEpubCreator();
+
+		// Temp folder and epub file name (path)
+		$epub->temp_folder = '/';
+		$epub->epub_file = slug($post['tieude']) . '.epub';
+
+		// E-book configs
+		$epub->title = $post['tieude'];
+		$epub->creator = 'Truyen sac';
+		$epub->language = 'vi';
+		$epub->rights = 'Public Domain';
+		$epub->publisher = 'truyensac.com';
+
+		// You can specity your own CSS
+		$epub->css = '*,*:before,*:after{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}body{margin:0;padding:0;line-height:1.5;text-align:justify}img{display:block!important;margin:.5em auto!important;max-width:100%!important;height:auto!important}pre{white-space:pre-wrap;display:block;margin:.5em}h1,h2,h3,h4,h5,h6{text-align:center}p,table{margin:.3em}table td,table th{border-bottom:1px solid #ccc;font-size:80%;color:#444;text-align:left}';
+
+		// $epub->uuid = '';  // You can specify your own uuid
+		// them chap
+		foreach ($data as $row)
+		{
+			preg_match('/\[chuong\](.*?)\[\/chuong\]/', $row, $chuong);
+			preg_match('#\[nd\](.*?)\[\/nd\]#is', $row, $nd2);
+			$epub->AddPage('<h2>' . $chuong[1] . '</h2>' . nl2br($nd2[1]) , false, $chuong[1]);
+		}
+
+		// Create the EPUB
+		// If there is some error, the epub file will not be created
+		if (!$epub->error)
+		{
+
+			// Since this can generate new errors when creating a folder
+			// We'll check again
+			$epub->CreateEPUB();
+
+			// If there's no error here, you're e-book is successfully created
+			if (!$epub->error)
+			{
+				echo 'Success: Tai ve epub cua ban <a href="' . base_url($epub->epub_file) . '">tai day</a>.';
+			}
+
+		}
+		else
+		{
+			// If for some reason you're e-book hasn't been created, you can see whats
+			// going on
+			echo $epub->error;
+		}
+	}
+
+	public function txt()
+	{
+		$id = $this->uri->rsegment(3);
+		$post = $this->posts_model->get_post_by_id($id);
+		if (!$post) show_404();
+		$nd = file_get_contents($post['noidung']);
+
+		$nd = str_replace(array('[nd]', '[/nd]', '[td]', '[/td]', '[chuong]', '[/chuong]', '[nextpage]'), '', $nd);
+		header("Content-Type: text/plain");
+		echo $nd;
+	}
+
 	public function search()
 	{
 		if ($tukhoa = $this->input->get('tukhoa', TRUE)) {
